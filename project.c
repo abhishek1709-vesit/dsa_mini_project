@@ -6,17 +6,14 @@
 #define MAX_SIZE 100
 #define MAX_NAME 50
 
-// Global variables for Queue (Participants)
 char participants[MAX_SIZE][MAX_NAME];
 int queue_front = 0;
 int queue_rear = -1;
 int queue_count = 0;
 
-// Global variables for Stack (Winning Numbers)
 int winning_numbers[MAX_SIZE];
 int stack_top = -1;
 
-// Queue Functions
 void initQueue() {
     queue_front = 0;
     queue_rear = -1;
@@ -52,7 +49,6 @@ void dequeue(char* name) {
     queue_count--;
 }
 
-// Stack Functions
 void initStack() {
     stack_top = -1;
 }
@@ -80,7 +76,6 @@ int pop() {
     return winning_numbers[stack_top--];
 }
 
-// Utility Functions
 void displayParticipants() {
     if (isQueueEmpty()) {
         printf("No participants in the lottery yet!\n");
@@ -99,14 +94,13 @@ void displayParticipants() {
 void generateWinningNumbers(int count) {
     printf("\n=== GENERATING WINNING NUMBERS ===\n");
     
-    // Clear any existing numbers in stack
     initStack();
     
     srand(time(NULL));
     
     printf("Winning numbers (in reverse order): ");
     for (int i = 0; i < count; i++) {
-        int number = (rand() % 99) + 1; // Numbers between 1-99
+        int number = (rand() % 99) + 1; 
         push(number);
         printf("%d ", number);
     }
@@ -123,7 +117,6 @@ void displayWinningNumbers() {
     int temp_numbers[MAX_SIZE];
     int temp_top = -1;
     
-    // Copy to temp stack to preserve original
     int number;
     while (!isStackEmpty()) {
         number = pop();
@@ -131,7 +124,6 @@ void displayWinningNumbers() {
         printf("%d ", number);
     }
     
-    // Restore original stack
     while (temp_top >= 0) {
         push(temp_numbers[temp_top--]);
     }
@@ -149,22 +141,17 @@ void drawWinners(int numWinners) {
     }
     
     printf("\n=== LOTTERY DRAW RESULTS ===\n");
-    srand(time(NULL)); // Seed randomness
+    srand(time(NULL)); 
     
     for (int i = 0; i < numWinners; i++) {
-        // Pick a random index from queue
         int winnerIndex = rand() % queue_count;
 
-        // Find that participant
         int actualIndex = (queue_front + winnerIndex) % MAX_SIZE;
         char winner[MAX_NAME];
         strcpy(winner, participants[actualIndex]);
 
-        // Print winner
         printf("Winner #%d: %s\n", i + 1, winner);
 
-        // Remove the winner from the queue
-        // Shift elements to maintain queue correctly
         for (int j = winnerIndex; j < queue_count - 1; j++) {
             int srcIndex = (queue_front + j + 1) % MAX_SIZE;
             int destIndex = (queue_front + j) % MAX_SIZE;
@@ -177,20 +164,17 @@ void drawWinners(int numWinners) {
     printf("\nCongratulations to all winners!\n");
 }
 
-// Update main function to remove unwanted options
 int main() {
     int choice;
     char name[MAX_NAME];
     int numWinners;
     
-    // Initialize data structures
     initQueue();
     
     printf("Welcome to the Simple Lottery Simulator!\n");
     printf("Using Queue for participants.\n");
     
     while (1) {
-        // Display menu directly in main function
         printf("\n========== LOTTERY SIMULATOR ==========\n");
         printf("1. Add Participant\n");
         printf("2. View All Participants\n");
